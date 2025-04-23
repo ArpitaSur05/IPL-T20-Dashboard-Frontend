@@ -1,30 +1,35 @@
-# Pnpm dashboard code
+# 🏏 IPL T20 Live Dashboard - Frontend
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A sleek, responsive IPL T20 Live Dashboard built using **Next.js**, **TypeScript**, and **Tailwind CSS**. This frontend connects to a Puppeteer-powered backend that scrapes real-time data from [iplt20.com](https://www.iplt20.com) including live match schedule, mini scorecards, and the points table.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/arpitaaaaaaas-projects/v0-pnpm-dashboard-code)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/dptDyYEqYDU)
+Please note that, the real time data update/notification has been implemented only for the match summary which would give information only when any live match is going on below the live-match-card.
 
-## Overview
+---
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## ⚙️ Tech Stack
 
-## Deployment
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Package Manager**: pnpm
+- **HTTP Client**: Axios
 
-Your project is live at:
+---
 
-**[https://vercel.com/arpitaaaaaaas-projects/v0-pnpm-dashboard-code](https://vercel.com/arpitaaaaaaas-projects/v0-pnpm-dashboard-code)**
+## 🛠 How to Run Locally
 
-## Build your app
+### 1. Clone the repositories
 
-Continue building your app on:
+```bash
+Frontend => git clone https://github.com/ArpitaSur05/IPL-T20-Dashboard-Frontend.git
+Backend => git clone https://github.com/ArpitaSur05/IPL-Dashboard-Scraping.git
+```
 
-**[https://v0.dev/chat/projects/dptDyYEqYDU](https://v0.dev/chat/projects/dptDyYEqYDU)**
+### 2. Install dependencies
 
-## How It Works
+```bash
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Backend => pnpm i (Make sure the backend runs at 3000 port)
+Frontend => pnpm i
+
+```
