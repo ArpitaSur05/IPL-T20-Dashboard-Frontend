@@ -1,66 +1,88 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Clock, Trophy } from "lucide-react"
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Clock, Trophy } from "lucide-react";
+import Pusher from "pusher-js";
 
 // Interfaces
 interface Team {
-  name: string
-  logo: string
-  score: string
-  overs: string
+  name: string;
+  logo: string;
+  score: string;
+  overs: string;
 }
 
 interface LiveMatch {
-  matchNumber: string
-  team1: Team
-  team2: Team
-  matchSummary: string
-  liveMatch: string
+  matchNumber: string;
+  team1: Team;
+  team2: Team;
+  matchSummary: string;
+  liveMatch: string;
 }
 
 interface MiniScoreCardData {
   striker: {
-    name: string
-    runs: string
-    balls: string
-  }
+    name: string;
+    runs: string;
+    balls: string;
+  };
   nonStriker: {
-    name: string
-    runs: string
-    balls: string
-  }
+    name: string;
+    runs: string;
+    balls: string;
+  };
   bowler: {
-    name: string
-    overs: string
-    runs: string
-    wickets: string
-  }
+    name: string;
+    overs: string;
+    runs: string;
+    wickets: string;
+  };
 }
 
 interface LiveMatchCardProps {
-  liveMatchData: LiveMatch
-  miniScoreCardData?: MiniScoreCardData
+  liveMatchData: LiveMatch;
+  miniScoreCardData?: MiniScoreCardData;
 }
 
-const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps) => {
-  const { matchNumber, team1, team2, matchSummary, liveMatch } = liveMatchData
-  const [timeNow, setTimeNow] = useState<string>("")
+const LiveMatchCard = ({
+  liveMatchData,
+  miniScoreCardData,
+}: LiveMatchCardProps) => {
+  const { matchNumber, team1, team2, matchSummary, liveMatch } = liveMatchData;
+  const [timeNow, setTimeNow] = useState<string>("");
+  const [liveMatchSummary, setMatchSummary] = useState<string | null>(
+    matchSummary || null
+  );
+
+  useEffect(() => {
+    const pusher = new Pusher("1aca8f81365e8b3cb9d4", {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("my-channel");
+    channel.bind("update", function (data: any) {
+      if (data?.matchSummary) {
+        setMatchSummary(data.matchSummary);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (liveMatch === "False") {
       const updateTime = () => {
-        const now = new Date()
-        setTimeNow(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))
-      }
+        const now = new Date();
+        setTimeNow(
+          now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        );
+      };
 
-      updateTime()
-      const interval = setInterval(updateTime, 60000)
-      return () => clearInterval(interval)
+      updateTime();
+      const interval = setInterval(updateTime, 60000);
+      return () => clearInterval(interval);
     }
-  }, [liveMatch])
+  }, [liveMatch]);
 
   return (
     <Card className="overflow-hidden border-0 shadow-lg transition-all duration-300 hover:shadow-xl">
@@ -77,7 +99,10 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-300 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-red-400"></span>
               </span>
-              <Badge variant="outline" className="border-red-300 bg-red-500/20 text-white">
+              <Badge
+                variant="outline"
+                className="border-red-300 bg-red-500/20 text-white"
+              >
                 LIVE
               </Badge>
               {timeNow && (
@@ -98,10 +123,18 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
             {/* Team 1 */}
             <div className="flex flex-1 flex-col items-center text-center">
               <div className="mb-2 h-20 w-20 overflow-hidden rounded-full border-4 border-white shadow-md transition-transform duration-300 hover:scale-105">
-                <img src={team1.logo || "/placeholder.svg"} alt={team1.name} className="h-full w-full object-cover" />
+                <img
+                  src={team1.logo || "/placeholder.svg"}
+                  alt={team1.name}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <h4 className="text-base font-bold text-gray-800">{team1.name}</h4>
-              <p className="text-lg font-semibold text-red-700">{team1.score}</p>
+              <h4 className="text-base font-bold text-gray-800">
+                {team1.name}
+              </h4>
+              <p className="text-lg font-semibold text-red-700">
+                {team1.score}
+              </p>
               <p className="text-xs text-gray-500">{team1.overs}</p>
             </div>
 
@@ -118,10 +151,18 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
             {/* Team 2 */}
             <div className="flex flex-1 flex-col items-center text-center">
               <div className="mb-2 h-20 w-20 overflow-hidden rounded-full border-4 border-white shadow-md transition-transform duration-300 hover:scale-105">
-                <img src={team2.logo || "/placeholder.svg"} alt={team2.name} className="h-full w-full object-cover" />
+                <img
+                  src={team2.logo || "/placeholder.svg"}
+                  alt={team2.name}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <h4 className="text-base font-bold text-gray-800">{team2.name}</h4>
-              <p className="text-lg font-semibold text-red-700">{team2.score}</p>
+              <h4 className="text-base font-bold text-gray-800">
+                {team2.name}
+              </h4>
+              <p className="text-lg font-semibold text-red-700">
+                {team2.score}
+              </p>
               <p className="text-xs text-gray-500">{team2.overs}</p>
             </div>
           </div>
@@ -130,14 +171,18 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
         {/* Match Summary */}
         {matchSummary && (
           <div className="border-t border-gray-100 bg-white p-3">
-            <p className="text-sm font-medium text-gray-700">{matchSummary}</p>
+            <p className="text-sm font-medium text-gray-700">
+              {liveMatchSummary}
+            </p>
           </div>
         )}
 
         {/* Mini Scorecard */}
         {miniScoreCardData && (
           <div className="border-t border-gray-100 bg-white px-4 py-3">
-            <h4 className="mb-2 text-sm font-semibold text-gray-700">Mini Scorecard</h4>
+            <h4 className="mb-2 text-sm font-semibold text-gray-700">
+              Mini Scorecard
+            </h4>
             <div className="overflow-x-auto rounded-lg border border-gray-200">
               <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-800">
                 <thead className="bg-gray-100 text-left text-xs uppercase tracking-wide text-gray-600">
@@ -151,25 +196,50 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
                   <tr className="font-medium">
-                    <td className="px-4 py-2">{miniScoreCardData.striker.name} <span className="text-xs text-green-600">(Striker)</span></td>
-                    <td className="px-4 py-2">{miniScoreCardData.striker.runs}</td>
-                    <td className="px-4 py-2">{miniScoreCardData.striker.balls}</td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.striker.name}{" "}
+                      <span className="text-xs text-green-600">(Striker)</span>
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.striker.runs}
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.striker.balls}
+                    </td>
                     <td className="px-4 py-2">-</td>
                     <td className="px-4 py-2">-</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2">{miniScoreCardData.nonStriker.name} <span className="text-xs text-blue-600">(Non-Striker)</span></td>
-                    <td className="px-4 py-2">{miniScoreCardData.nonStriker.runs}</td>
-                    <td className="px-4 py-2">{miniScoreCardData.nonStriker.balls}</td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.nonStriker.name}{" "}
+                      <span className="text-xs text-blue-600">
+                        (Non-Striker)
+                      </span>
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.nonStriker.runs}
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.nonStriker.balls}
+                    </td>
                     <td className="px-4 py-2">-</td>
                     <td className="px-4 py-2">-</td>
                   </tr>
                   <tr className="text-red-700 font-medium">
-                    <td className="px-4 py-2">{miniScoreCardData.bowler.name} <span className="text-xs text-red-500">(Bowler)</span></td>
-                    <td className="px-4 py-2">{miniScoreCardData.bowler.runs}</td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.bowler.name}{" "}
+                      <span className="text-xs text-red-500">(Bowler)</span>
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.bowler.runs}
+                    </td>
                     <td className="px-4 py-2">-</td>
-                    <td className="px-4 py-2">{miniScoreCardData.bowler.overs}</td>
-                    <td className="px-4 py-2">{miniScoreCardData.bowler.wickets}</td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.bowler.overs}
+                    </td>
+                    <td className="px-4 py-2">
+                      {miniScoreCardData.bowler.wickets}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -178,7 +248,7 @@ const LiveMatchCard = ({ liveMatchData, miniScoreCardData }: LiveMatchCardProps)
         )}
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default LiveMatchCard
+export default LiveMatchCard;

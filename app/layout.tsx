@@ -2,7 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import Link from "next/link"
+import { Menu, X, Twitter, Facebook, Instagram, Youtube } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,6 +32,46 @@ export default function RootLayout({
                   </div>
                   <h1 className="text-xl font-bold hidden md:block">IPL T20 Dashboard</h1>
                 </div>
+
+                 {/* Social Media Icons */}
+          <div className="hidden md:flex items-center gap-4">
+            <a
+              href="https://twitter.com/IPL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-blue-400 transition-colors"
+            >
+              <Twitter size={18} />
+              <span className="sr-only">IPL Twitter</span>
+            </a>
+            <a
+              href="https://www.facebook.com/IPL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <Facebook size={18} />
+              <span className="sr-only">IPL Facebook</span>
+            </a>
+            <a
+              href="https://www.instagram.com/iplt20"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-pink-600 transition-colors"
+            >
+              <Instagram size={18} />
+              <span className="sr-only">IPL Instagram</span>
+            </a>
+            <a
+              href="https://www.youtube.com/user/IPL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-red-600 transition-colors"
+            >
+              <Youtube size={18} />
+              <span className="sr-only">IPL YouTube</span>
+            </a>
+          </div>
                 {/* <nav className="flex gap-4">
                   <a href="#" className="text-sm font-medium hover:text-blue-600">
                     Home

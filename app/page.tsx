@@ -80,9 +80,9 @@ export default async function Home() {
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-7xl">
-      <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+      {/* <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
         IPL T20 Dashboard
-      </h1>
+      </h1> */}
 
       {/* 🌐 Live Match Section */}
       {liveMatchData && (
