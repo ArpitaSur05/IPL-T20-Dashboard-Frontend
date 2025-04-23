@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "IPL T20 Dashboard",
-  description: "Live IPL T20 cricket match information, points table, and schedule",
-    generator: 'v0.dev'
+  description: "Live IPL T20 cricket match information, points table, and schedule"
 }
 
 export default function RootLayout({
@@ -20,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        {/* <ThemeProvider attribute="class" defaultTheme="light" enableSystem> */}
           <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             <header className="border-b bg-white shadow-sm">
               <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -30,7 +29,7 @@ export default function RootLayout({
                   </div>
                   <h1 className="text-xl font-bold hidden md:block">IPL T20 Dashboard</h1>
                 </div>
-                <nav className="flex gap-4">
+                {/* <nav className="flex gap-4">
                   <a href="#" className="text-sm font-medium hover:text-blue-600">
                     Home
                   </a>
@@ -43,7 +42,7 @@ export default function RootLayout({
                   <a href="#" className="text-sm font-medium hover:text-blue-600">
                     News
                   </a>
-                </nav>
+                </nav> */}
               </div>
             </header>
             {children}
@@ -54,7 +53,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   )

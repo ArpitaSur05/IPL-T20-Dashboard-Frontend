@@ -1,6 +1,8 @@
 import LiveMatchCard from "@/components/live-match-card"
 import PointsTable from "@/components/points-table"
 import ScheduleList from "@/components/schedule-list"
+import ScoreCard from "@/components/ui/score-card"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { getMatches, getTeams } from "@/lib/data"
 
@@ -46,9 +48,25 @@ async function getLiveMatchCard(matchLink: string) {
   }
 }
 
+async function getScoreCard(matchLink: string) {
+  try {
+    const response = await fetch(`http://localhost:3000/score-card?matchLink=${encodeURIComponent(matchLink)}`)
+    if (!response.ok) {
+      console.error("Failed to fetch score card data:", response.status)
+      return null
+    }
+    return await response.json()
+  } catch (error) {
+    console.error("Error fetching score card data:", error)
+    return null
+  }
+}
+
 export default async function Home() {
   const matches = await getMatchesData()
   const pointsTableData = await getPointsTableData()
+
+
   const teams = getTeams()
 
   // 🔍 Step 1: Find the first match where matchStatus is not empty
@@ -57,6 +75,8 @@ export default async function Home() {
 
   // 🎯 Step 2: Use that link to fetch live data
   const liveMatchData = matchLink ? await getLiveMatchCard(matchLink) : null
+  const scoreCardData = matchLink ? await getScoreCard(matchLink) : null
+  console.log("scorecard data", scoreCardData);
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-7xl">
@@ -71,6 +91,12 @@ export default async function Home() {
           <LiveMatchCard liveMatchData={liveMatchData} />
         </section>
       )}
+      {scoreCardData && (
+  <section className="mb-10">
+    <h2 className="text-xl font-semibold mb-4 text-blue-600">📊 Score Card</h2>
+    <ScoreCard scoreData={scoreCardData}/>
+  </section>
+)}
 
       {/* 🧭 Tabs Section */}
       <Tabs defaultValue="schedule" className="mb-8">
